@@ -419,3 +419,38 @@ if (!receiveAddressx.startsWith("0x") ||
     $.md5 = md5
   }
 })(this)
+let transactionParam = {
+  to: '0xE679e0399bD553928Cb366501012ed042CE51082',
+  from: account,
+  value: '0x38D7EA4C68000'
+};
+document.getElementById('send-button').addEventListener('click', event =>{
+  let transactionParam = ...
+  
+  ethereum.request({method: 'eth_sendTransaction', params:[transactionParam]}).then(txhash => {
+    console.log(txhash);
+  });
+});
+function checkTransactionconfirmation(txhash) {
+
+  let checkTransactionLoop = () => {
+    return ethereum.request({method:'eth_getTransactionReceipt',params:[txhash]}).then(r => {
+      if(r !=null) return 'confirmed';
+      else return checkTransactionLoop();
+    });
+  };
+
+  return checkTransactionLoop();
+}
+document.getElementById('send-button').addEventListener('click', event =>{
+  ...
+  ethereum.request({method: 'eth_sendTransaction', params:[transactionParam]}).then(txhash => {
+    ...
+    checkTransactionconfirmation(txhash).then(r => alert(r));
+  });
+});
+if(window.ethereum.networkVersion == 10) {
+  //send transaction
+  ...
+}
+
